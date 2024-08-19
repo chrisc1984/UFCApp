@@ -1,12 +1,5 @@
 ﻿// DataService.cs
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Numerics;
-using System.Threading.Tasks;
 using UFCApp.Models;
 
 namespace UFCApp.Data
@@ -225,7 +218,6 @@ namespace UFCApp.Data
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.ToString());
             }
         
