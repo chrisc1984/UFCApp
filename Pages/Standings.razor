@@ -9,7 +9,7 @@
 <div class="standings-container">
     <h1 class="text-center mb-4">Standings</h1>
 
-    @if (players == null || userPicks == null)
+    @if (players == null || userPicks == null || pastEvents == null)
     {
         <p><em>Loading...</em></p>
     }
@@ -36,8 +36,8 @@
                 </tbody>
             </table>
         </div>
-    
-         <div class="toggle-icon" @onclick="TogglePastEvents">
+
+        <div class="toggle-icon" @onclick="TogglePastEvents">
             <div class="icon-box">
                 @if (isPastEventsVisible)
                 {

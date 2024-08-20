@@ -1,5 +1,6 @@
 ﻿@page "/eventadmin"
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @using UFCApp.Data
 @using UFCApp.Models
 @inject DataService dataService
@@ -133,7 +134,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-end mt-2">
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" disabled="@isProcessing" class="btn btn-success">Save</button>
                                     </div>
                                 </EditForm>
                             </div>
@@ -148,6 +149,7 @@
 @code {
     private Event newEvent = new Event { StartTime = DateTime.Today, Fights = new List<Fight> { new Fight() } };
     private List<Event>? pastEvents;
+    private bool isProcessing = false;
 
     private void AddFight()
     {
@@ -175,8 +177,8 @@
                       newEvent.Fights.Count == 5 &&
                       newEvent.Fights.All(f => !string.IsNullOrWhiteSpace(f.Fighter1Name) &&
                                                !string.IsNullOrWhiteSpace(f.Fighter2Name) &&
-                                               f.Fighter1Points >= 0 &&
-                                               f.Fighter2Points >= 0);
+                                               f.Fighter1Points != 0 &&
+                                               f.Fighter2Points != 0);
     }
 
     private Task HandleFieldChanged()
@@ -185,12 +187,56 @@
         return Task.CompletedTask;
     }
 
+    private void TranformEventOdds(Event e)
+    {
+        foreach (var fight in e.Fights)
+        {
+            if (fight.Fighter1Points < 0 || fight.Fighter1Points > 10)
+            {
+                fight.Fighter1Points = ConvertOdds(fight.Fighter1Points);
+            }
+
+            if (fight.Fighter2Points < 0 || fight.Fighter2Points > 10)
+            {
+                fight.Fighter2Points = ConvertOdds(fight.Fighter2Points);
+            }
+        }     
+    }
+
+    private decimal ConvertOdds(decimal odds)
+    {
+        decimal impliedProbability;
+
+        if (odds < 0) // Favourites
+        {
+            impliedProbability = -odds / (-odds + 100m);
+        }
+        else // Underdogs
+        {
+            impliedProbability = 100m / (odds + 100m);
+        }
+
+        // Convert implied probability to a score between 0 and 10
+        decimal score = 10m - (impliedProbability * 10m);
+
+        // Ensure the score is between 0 and 10
+        score = Math.Max(0m, Math.Min(10m, score));
+
+        // Round to 1 decimal place
+        return Math.Round(score, 1);
+    }
+
     private async Task HandleValidSubmit()
     {
+
+        isProcessing = true;
         if (CanAddEvent)
         {
             //Add Event
             int newEventId = await dataService.AddEvent(newEvent);
+
+            //Tranform Event Odds to 0 to 10 scale
+            TranformEventOdds(newEvent);
 
             //Add Fights to Event
             List<int> newFightIds = await dataService.AddFights(newEvent.Fights, newEventId);
@@ -199,8 +245,12 @@
             await dataService.AddEmptyUserPicks(newFightIds);
 
             newEvent = new Event { StartTime = DateTime.Today, Fights = new List<Fight> { new Fight() } };
-            UpdateCanAddEvent();
+            pastEvents = await dataService.GetPastEvents();
         }
+
+        isProcessing = false;
+
+
     }
 
     private async Task HandleEventUpdate(Event e)
