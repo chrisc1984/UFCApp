@@ -6,7 +6,13 @@ namespace UFCApp.Data
 {
     public class DataService
     {
-        private readonly string _connString = "Host=roundhouse.proxy.rlwy.net;Port=54320;Username=postgres;Password=kigevJQHqKACQVFhgiSkOpJOqmMQEMed;Database=railway;";
+        private readonly string _connString;
+
+        public DataService(IConfiguration configuration)
+        {
+            // Read the connection string from the configuration
+            _connString = configuration.GetConnectionString("DefaultConnection");
+        }
 
         public async Task<List<Player>> GetPlayersAsync()
         {
