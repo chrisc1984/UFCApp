@@ -13,6 +13,7 @@ using UFCApp.Areas.Identity.Data;
 
 namespace UFCApp.Areas.Identity.Pages.Account
 {
+    [IgnoreAntiforgeryToken]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<UFCAppUser> _signInManager;
