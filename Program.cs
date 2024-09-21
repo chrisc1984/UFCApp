@@ -6,6 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using UFCApp.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load user secrets only in development
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'UFCAppDBContextConnection' not found.");
 
 builder.Services.AddDbContext<UFCAppDBContext>(options =>

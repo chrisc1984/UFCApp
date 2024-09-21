@@ -48,7 +48,7 @@
                     <span>+</span> <!-- Plus icon when past events are hidden -->
                 }
             </div>
-            <span class="mr-2">View Past Events</span>
+            <span class="mr-2">Events</span>
         </div>
 
         @if (isPastEventsVisible)
@@ -83,7 +83,7 @@
                                                 {
                                                     var userPickForFight = userPick.Picks.FirstOrDefault(p => p.FightId == fight.Id);
                                                     var correctPick = userPickForFight != default && userPickForFight.Pick == fight.Winner;
-                                                    var applyStrikeThrough = !correctPick && fight.Winner != "TBD";
+                                                    var applyStrikeThrough = !correctPick && !String.IsNullOrEmpty(fight.Winner);
                                                     var fighterPoints = userPickForFight != default && userPickForFight.Pick == fight.Fighter1Name ? fight.Fighter1Points : fight.Fighter2Points;
                                                     if (String.IsNullOrEmpty(userPickForFight.Pick))
                                                     {
