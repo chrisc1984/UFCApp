@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>b57c2e0c-0158-415b-8ff0-132087937016</UserSecretsId>
 	<ScopedCssFileOutputDirectory>wwwroot/css</ScopedCssFileOutputDirectory>
+	<BlazorEnableStaticWebAssets>true</BlazorEnableStaticWebAssets>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
     <PackageReference Include="Npgsql" Version="6.0.11" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.29" />
+	 <Content Include="wwwroot\css\UFCApp.styles.css" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
