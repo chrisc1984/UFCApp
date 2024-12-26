@@ -1,0 +1,183 @@
+/* _content/UFCApp/Pages/Standings.razor.rz.scp.css */
+
+/* Custom styles for the standings page */
+.standings-container[b-9y9g36esqu] {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-container[b-9y9g36esqu] {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.toggle-icon[b-9y9g36esqu] {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    color: #007bff;
+    margin-top: 20px;
+}
+
+    .toggle-icon .icon-box[b-9y9g36esqu] {
+        width: 24px;
+        height: 24px;
+        border: 1px solid #007bff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+    }
+
+    .toggle-icon span[b-9y9g36esqu] {
+        display: inline-block;
+    }
+
+
+/* _content/UFCApp/Shared/MainLayout.razor.rz.scp.css */
+.page[b-1iar72lr5s] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-1iar72lr5s] {
+    flex: 1;
+    background-color: white;
+    color: black;
+}
+
+
+.sidebar[b-1iar72lr5s] {
+    background-image: linear-gradient(180deg, rgb(226, 202, 69) 0%, #000000 70%);
+}
+
+.top-row[b-1iar72lr5s] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-1iar72lr5s]  a, .top-row .btn-link[b-1iar72lr5s] {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child[b-1iar72lr5s] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-1iar72lr5s] {
+        display: none;
+    }
+
+    .top-row.auth[b-1iar72lr5s] {
+        justify-content: space-between;
+    }
+
+    .top-row a[b-1iar72lr5s], .top-row .btn-link[b-1iar72lr5s] {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-1iar72lr5s] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-1iar72lr5s] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-1iar72lr5s] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-image: linear-gradient(to right, rgb(226, 202, 69) 0%, #000000 70%);
+        color: white;
+    }
+
+    .top-row[b-1iar72lr5s], article[b-1iar72lr5s] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+
+/* _content/UFCApp/Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-yzic1s65w9] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-yzic1s65w9] {
+    height: 3.5rem;
+    background-color: rgb(226, 202, 69);
+}
+
+.navbar-brand[b-yzic1s65w9] {
+    font-size: 1.1rem;
+}
+
+.oi[b-yzic1s65w9] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-yzic1s65w9] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-yzic1s65w9] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-yzic1s65w9] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-yzic1s65w9]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-yzic1s65w9]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: black;
+}
+
+.nav-item[b-yzic1s65w9]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-yzic1s65w9] {
+        display: none;
+    }
+
+    .collapse[b-yzic1s65w9] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}
