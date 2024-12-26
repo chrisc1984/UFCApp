@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
     <PackageReference Include="Npgsql" Version="6.0.11" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.29" />
-	<Content Include="wwwroot\css\UFCApp.styles.css" CopyToPublishDirectory="Always" />
+	<Content Include="obj\Release\net6.0\scopedcss\bundle\UFCApp.styles.css" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
 
