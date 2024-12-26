@@ -25,11 +25,4 @@
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\css\UFCApp.styles.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>
