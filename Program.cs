@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Web;
 using UFCApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using UFCApp.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +14,6 @@ if (builder.Environment.IsDevelopment())
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'UFCAppDBContextConnection' not found.");
 
-builder.Services.AddDbContext<UFCAppDBContext>(options =>
-    options.UseNpgsql(connectionString));
-
-builder.Services.AddDefaultIdentity<UFCAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<UFCAppDBContext>();
 
 builder.Services.AddAuthentication()
     .AddCookie();
@@ -29,7 +23,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<DataService>();
-
 
 var app = builder.Build();
 
