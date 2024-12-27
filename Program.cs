@@ -4,6 +4,7 @@ using UFCApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UFCApp.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<DataService>();
+// Register the NoOpEmailSender as the IEmailSender implementation
+builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
 
 var app = builder.Build();
 
