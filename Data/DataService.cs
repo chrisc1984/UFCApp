@@ -79,6 +79,34 @@ namespace UFCApp.Data
             return pastEvents;
         }
 
+        public async Task<List<Event>> GetHistoricalScores()
+        {
+            //List<Event> pastEvents = new List<Event>();
+
+            //try
+            //{
+            //    using var conn = new NpgsqlConnection(_connString);
+            //    await conn.OpenAsync();
+
+            //    using var cmd = new NpgsqlCommand("SELECT id, name FROM tblEvent ORDER BY starttime DESC", conn);
+            //    using var reader = await cmd.ExecuteReaderAsync();
+
+            //    while (await reader.ReadAsync())
+            //    {
+            //        Event e = new Event();
+            //        e.Id = reader.GetInt32(0);
+            //        e.Name = reader.GetString(1);
+            //        pastEvents.Add(e);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Error: " + ex.ToString());
+            //}
+
+            //return pastEvents;
+        }
+
         public async Task<List<Event>> GetPastEvents()
         {
             List <Event> pastEvents = await GetPastEventIds();
