@@ -6,3 +6,71 @@
 
 <PageTitle>History</PageTitle>
 
+@if (recordsByYear == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var year in recordsByYear)
+    {
+        <div class="container">
+            <h1 class="text-center mb-4">@year.Key</h1>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="table-container">
+                        <table class="table table-striped table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th></th> <!-- New column for medals -->
+                                    <th>Name</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < year.Value.Count; i++)
+                                {
+                                    var record = year.Value[i];
+                                    <tr>
+                                        <td>
+                                            @if (i == 0)
+                                            {
+                                                <span title="Gold Medal">🥇</span>
+                                            }
+                                            else if (i == 1)
+                                            {
+                                                <span title="Silver Medal">🥈</span>
+                                            }
+                                            else if (i == 2)
+                                            {
+                                                <span title="Bronze Medal">🥉</span>
+                                            }
+                                        </td>
+                                        <td>@record.Name</td>
+                                        <td>@record.Score</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    }
+    
+}
+
+@code {
+    private Dictionary<int, List<HistoricalRecord>>? recordsByYear;
+
+    protected override async Task OnInitializedAsync()
+    {
+        recordsByYear = await dataService.GetHistoricalRecords();
+    }
+
+}

@@ -79,32 +79,46 @@ namespace UFCApp.Data
             return pastEvents;
         }
 
-        public async Task<List<Event>> GetHistoricalScores()
+        public async Task<Dictionary<int, List<HistoricalRecord>>> GetHistoricalRecords()
         {
-            //List<Event> pastEvents = new List<Event>();
+            Dictionary<int, List<HistoricalRecord>> recordByYear  = new Dictionary<int, List<HistoricalRecord>>();
+            List<HistoricalRecord> historicalRecords = new List<HistoricalRecord>();
 
-            //try
-            //{
-            //    using var conn = new NpgsqlConnection(_connString);
-            //    await conn.OpenAsync();
+            try
+            {
+                using var conn = new NpgsqlConnection(_connString);
+                await conn.OpenAsync();
 
-            //    using var cmd = new NpgsqlCommand("SELECT id, name FROM tblEvent ORDER BY starttime DESC", conn);
-            //    using var reader = await cmd.ExecuteReaderAsync();
+                using var cmd = new NpgsqlCommand(@"
+                                SELECT year, H.userId, U.name, H.Score
+                                FROM tblHistory H 
+                                    JOIN tblUser U ON H.userId = U.id
+                                ORDER BY year, score DESC"
+                                , conn);
+                using var reader = await cmd.ExecuteReaderAsync();
 
-            //    while (await reader.ReadAsync())
-            //    {
-            //        Event e = new Event();
-            //        e.Id = reader.GetInt32(0);
-            //        e.Name = reader.GetString(1);
-            //        pastEvents.Add(e);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Error: " + ex.ToString());
-            //}
+                while (await reader.ReadAsync())
+                {
+                    HistoricalRecord r = new HistoricalRecord();
+                    r.Year = reader.GetInt32(0);
+                    r.UserId = reader.GetInt32(1);
+                    r.Name = reader.GetString(2);
+                    r.Score = reader.GetDecimal(3);
 
-            //return pastEvents;
+                    historicalRecords.Add(r);
+                }
+
+                // Group the records by Year and convert to Dictionary<int, List<HistoricalRecord>>
+                recordByYear = historicalRecords
+                    .GroupBy(r => r.Year)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.ToString());
+            }
+
+            return recordByYear;
         }
 
         public async Task<List<Event>> GetPastEvents()
