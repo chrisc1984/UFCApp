@@ -69,7 +69,7 @@
                                             <th>Fighter 2</th>
                                             @foreach (var userPick in userPicks)
                                             {
-                                                <th>@userPick.Name's Picks</th>
+                                                <th>@userPick.Name</th>
                                             }
                                         </tr>
                                     </thead>
@@ -85,13 +85,22 @@
                                                     var correctPick = userPickForFight != default && userPickForFight.Pick == fight.Winner;
                                                     var applyStrikeThrough = !correctPick && !String.IsNullOrEmpty(fight.Winner);
                                                     var fighterPoints = userPickForFight != default && userPickForFight.Pick == fight.Fighter1Name ? fight.Fighter1Points : fight.Fighter2Points;
-                                                    if (String.IsNullOrEmpty(userPickForFight.Pick))
+                                                    if (userPickForFight is null || (String.IsNullOrEmpty(userPickForFight.Pick)))
                                                     {
                                                         fighterPoints = 0;
                                                     }
 
                                                     <td style="@(applyStrikeThrough ? "text-decoration: line-through;" : (correctPick ? "background-color: rgba(0, 255, 0, 0.2);" : "background-color: transparent;"))">
-                                                        @userPickForFight.Pick
+
+                                                        @if (userPickForFight is null)
+                                                        {
+                                                            <span>No Pick</span>
+                                                        }
+                                                        else 
+                                                        {
+                                                            @userPickForFight.Pick
+                                                        }
+                                                       
                                                         @if (fight.Winner == "TBD" || !applyStrikeThrough)
                                                         {
                                                             @(" [")
