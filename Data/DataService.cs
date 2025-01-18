@@ -51,7 +51,12 @@ namespace UFCApp.Data
             return players;
         }
 
-        public async Task<List<Event>> GetPastEventIds()
+        private async Task<List<Event>> GetPastEventIds()
+        {
+            return await GetPastEventIds(DateTime.MinValue);
+        }
+
+        public async Task<List<Event>> GetPastEventIds(DateTime datetime)
         {
             List<Event> pastEvents = new List<Event>();
 
@@ -59,8 +64,9 @@ namespace UFCApp.Data
             {
                 using var conn = new NpgsqlConnection(_connString);
                 await conn.OpenAsync();
-
-                using var cmd = new NpgsqlCommand("SELECT id, name FROM tblEvent ORDER BY starttime DESC", conn);
+                
+                using var cmd = new NpgsqlCommand("SELECT id, name FROM tblEvent WHERE starttime > @datetime ORDER BY starttime DESC", conn);
+                cmd.Parameters.AddWithValue("@datetime", datetime);
                 using var reader = await cmd.ExecuteReaderAsync();
 
                 while (await reader.ReadAsync())
@@ -123,7 +129,12 @@ namespace UFCApp.Data
 
         public async Task<List<Event>> GetPastEvents()
         {
-            List <Event> pastEvents = await GetPastEventIds();
+            return await GetPastEvents(DateTime.MinValue);
+        }
+
+        public async Task<List<Event>> GetPastEvents(DateTime datetime)
+        {
+            List <Event> pastEvents = await GetPastEventIds(datetime);
   
             try
             {
@@ -172,6 +183,8 @@ namespace UFCApp.Data
 
             return pastEvents;
         }
+
+       
 
         public async Task<int> AddEvent(Event newEvent)
         {

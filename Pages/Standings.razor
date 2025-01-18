@@ -37,105 +37,97 @@
             </table>
         </div>
 
-        <div class="toggle-icon" @onclick="TogglePastEvents">
-            <div class="icon-box">
-                @if (isPastEventsVisible)
-                {
-                    <span>-</span> <!-- Minus icon when past events are visible -->
-                }
-                else
-                {
-                    <span>+</span> <!-- Plus icon when past events are hidden -->
-                }
-            </div>
-            <span class="mr-2">Events</span>
+        <div>
+            <h3 class="text-center">Current Event</h3>
         </div>
 
-        @if (isPastEventsVisible)
-        {
-            <div class="mt-3">
-                @foreach (var e in pastEvents)
-                {
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            UFC @e.Name
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table table-bordered border-4">
-                                    <thead>
+        <div class="mt-3">
+            @foreach (var e in pastEvents)
+            {
+                <div class="card mb-3">
+                    <div class="card-header">
+                        UFC @e.Name
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table table-bordered border-4">
+                                <thead>
+                                    <tr>
+                                        <th>Fighter 1</th>
+                                        <th>Fighter 2</th>
+                                        @foreach (var userPick in userPicks)
+                                        {
+                                            <th>@userPick.Name</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var fight in e.Fights)
+                                    {
                                         <tr>
-                                            <th>Fighter 1</th>
-                                            <th>Fighter 2</th>
+                                            <td>@fight.Fighter1Name [@fight.Fighter1Points]</td>
+                                            <td>@fight.Fighter2Name [@fight.Fighter2Points]</td>
                                             @foreach (var userPick in userPicks)
                                             {
-                                                <th>@userPick.Name</th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var fight in e.Fights)
-                                        {
-                                            <tr>
-                                                <td>@fight.Fighter1Name [@fight.Fighter1Points]</td>
-                                                <td>@fight.Fighter2Name [@fight.Fighter2Points]</td>
-                                                @foreach (var userPick in userPicks)
+                                                var userPickForFight = userPick.Picks.FirstOrDefault(p => p.FightId == fight.Id);
+                                                var correctPick = userPickForFight != default && userPickForFight.Pick == fight.Winner;
+                                                var applyStrikeThrough = !correctPick && !String.IsNullOrEmpty(fight.Winner);
+                                                var fighterPoints = userPickForFight != default && userPickForFight.Pick == fight.Fighter1Name ? fight.Fighter1Points : fight.Fighter2Points;
+                                                if (userPickForFight is null || (String.IsNullOrEmpty(userPickForFight.Pick)))
                                                 {
-                                                    var userPickForFight = userPick.Picks.FirstOrDefault(p => p.FightId == fight.Id);
-                                                    var correctPick = userPickForFight != default && userPickForFight.Pick == fight.Winner;
-                                                    var applyStrikeThrough = !correctPick && !String.IsNullOrEmpty(fight.Winner);
-                                                    var fighterPoints = userPickForFight != default && userPickForFight.Pick == fight.Fighter1Name ? fight.Fighter1Points : fight.Fighter2Points;
-                                                    if (userPickForFight is null || (String.IsNullOrEmpty(userPickForFight.Pick)))
-                                                    {
-                                                        fighterPoints = 0;
-                                                    }
-
-                                                    <td style="@(applyStrikeThrough ? "text-decoration: line-through;" : (correctPick ? "background-color: rgba(0, 255, 0, 0.2);" : "background-color: transparent;"))">
-
-                                                        @if (userPickForFight is null)
-                                                        {
-                                                            <span>No Pick</span>
-                                                        }
-                                                        else 
-                                                        {
-                                                            @userPickForFight.Pick
-                                                        }
-                                                       
-                                                        @if (fight.Winner == "TBD" || !applyStrikeThrough)
-                                                        {
-                                                            @(" [")
-                                                            @fighterPoints
-                                                            @("]")
-                                                        }
-                                                    </td>
+                                                    fighterPoints = 0;
                                                 }
 
-                                            </tr>
-                                        }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="2">Total Points</td>
-                                            @foreach (var userPick in userPicks)
-                                            {
-                                                var totalPointsForCorrectPicks =
-                                                e.Fights
-                                                .Where(fight => userPick.Picks.Any(p => p.FightId == fight.Id && p.Pick == fight.Winner && fight.Winner == fight.Fighter1Name))
-                                                .Sum(fight => fight.Fighter1Points) +
-                                                e.Fights
-                                                .Where(fight => userPick.Picks.Any(p => p.FightId == fight.Id && p.Pick == fight.Winner && fight.Winner == fight.Fighter2Name))
-                                                .Sum(fight => fight.Fighter2Points);
-                                                <td>@totalPointsForCorrectPicks</td>
+                                                <td style="@(applyStrikeThrough ? "text-decoration: line-through;" : (correctPick ? "background-color: rgba(0, 255, 0, 0.2);" : "background-color: transparent;"))">
+
+                                                    @if (userPickForFight is null)
+                                                    {
+                                                        <span>No Pick</span>
+                                                    }
+                                                    else if (e.StartTime > DateTime.UtcNow)
+                                                    {
+                                                        <span>--hidden--</span>
+                                                    } 
+                                                    else
+                                                    {
+                                                        @userPickForFight.Pick
+                                                    }
+
+                                                    @if ((fight.Winner == "TBD" || !applyStrikeThrough) && (e.StartTime < DateTime.UtcNow))
+                                                    {
+                                                        @(" [")
+                                                        @fighterPoints
+                                                        @("]")
+                                                    }
+                                                </td>
                                             }
+
                                         </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Total Points</td>
+                                        @foreach (var userPick in userPicks)
+                                        {
+                                            var totalPointsForCorrectPicks =
+                                            e.Fights
+                                            .Where(fight => userPick.Picks.Any(p => p.FightId == fight.Id && p.Pick == fight.Winner && fight.Winner == fight.Fighter1Name))
+                                            .Sum(fight => fight.Fighter1Points) +
+                                            e.Fights
+                                            .Where(fight => userPick.Picks.Any(p => p.FightId == fight.Id && p.Pick == fight.Winner && fight.Winner == fight.Fighter2Name))
+                                            .Sum(fight => fight.Fighter2Points);
+                                            <td>@totalPointsForCorrectPicks</td>
+                                        }
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
-                }
-            </div>
-        }
+                </div>
+            }
+        </div>
+
     }
 </div>
 
@@ -148,7 +140,7 @@
     protected override async Task OnInitializedAsync()
     {
         players = await dataService.GetPlayersAsync();
-        pastEvents = await dataService.GetPastEvents();
+        pastEvents = await dataService.GetPastEvents(DateTime.Now.AddDays(-7));
         userPicks = await dataService.GetUserPicks();
     }
 

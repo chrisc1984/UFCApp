@@ -200,7 +200,7 @@
             {
                 fight.Fighter2Points = ConvertOdds(fight.Fighter2Points);
             }
-        }     
+        }
     }
 
     private decimal ConvertOdds(decimal odds)
@@ -228,29 +228,30 @@
 
     private async Task HandleValidSubmit()
     {
-
-        isProcessing = true;
-        if (CanAddEvent)
+        if (!CanAddEvent)
         {
-            //Add Event
-            int newEventId = await dataService.AddEvent(newEvent);
-
-            //Tranform Event Odds to 0 to 10 scale
-            TranformEventOdds(newEvent);
-
-            //Add Fights to Event
-            List<int> newFightIds = await dataService.AddFights(newEvent.Fights, newEventId);
-
-            //Add Empty User picks for each fight
-            await dataService.AddEmptyUserPicks(newFightIds);
-
-            newEvent = new Event { StartTime = DateTime.Today, Fights = new List<Fight> { new Fight() } };
-            pastEvents = await dataService.GetPastEvents();
+            return;
         }
 
+        isProcessing = true;
+
+        // Add Event
+        int newEventId = await dataService.AddEvent(newEvent);
+
+        // Transform Event Odds to 0 to 10 scale
+        TranformEventOdds(newEvent);
+
+        // Add Fights to Event
+        List<int> newFightIds = await dataService.AddFights(newEvent.Fights, newEventId);
+
+        // Add Empty User picks for each fight
+        await dataService.AddEmptyUserPicks(newFightIds);
+
+        // Reset newEvent
+        newEvent = new Event { StartTime = DateTime.Today, Fights = new List<Fight> { new Fight() } };
+        pastEvents = await dataService.GetPastEvents();
+
         isProcessing = false;
-
-
     }
 
     private async Task HandleEventUpdate(Event e)
