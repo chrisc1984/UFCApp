@@ -256,13 +256,14 @@
 
     private async Task HandleEventUpdate(Event e)
     {
+        TranformEventOdds(e);
         await dataService.UpdateEvent(e);
         await dataService.UpdateFights(e.Fights);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        pastEvents = await dataService.GetPastEvents();
+        pastEvents = await dataService.GetPastEvents(new DateTime(DateTime.Now.Year, 1, 1));
         UpdateCanAddEvent();
     }
 }
