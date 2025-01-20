@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Web;
 using UFCApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Load user secrets only in development

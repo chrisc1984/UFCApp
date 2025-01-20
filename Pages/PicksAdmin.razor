@@ -3,6 +3,7 @@
 @using UFCApp.Data
 @using UFCApp.Models
 @inject DataService dataService
+@inject NavigationManager Navigation
 
 <PageTitle>Picks Admin</PageTitle>
 
@@ -112,6 +113,9 @@
     private async Task SavePicksAsync()
     {
         await dataService.UpdateAllUsersPicks(userPicks);
+
+        // Refresh the page
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
 
     private async Task SavePicksAsync(Event pastEvent)
@@ -127,5 +131,8 @@
         .ToList();
 
         await dataService.UpdateAllUsersPicks(userPicksForEvent);
+
+        // Refresh the page
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
 }

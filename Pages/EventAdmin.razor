@@ -4,6 +4,7 @@
 @using UFCApp.Data
 @using UFCApp.Models
 @inject DataService dataService
+@inject NavigationManager Navigation
 
 <PageTitle>Admin Event Manager</PageTitle>
 
@@ -259,6 +260,10 @@
         TranformEventOdds(e);
         await dataService.UpdateEvent(e);
         await dataService.UpdateFights(e.Fights);
+
+        // Refresh the page
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+
     }
 
     protected override async Task OnInitializedAsync()
