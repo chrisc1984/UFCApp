@@ -120,7 +120,7 @@
     protected override async Task OnInitializedAsync()
     {
         players = await dataService.GetPlayersAsync();
-        pastEvents = await dataService.GetPastEvents(DateTime.Now.AddDays(-7));
+        pastEvents = await dataService.GetPastEvents(new DateTime(DateTime.Now.Year, 1, 1));
         userPicks = await dataService.GetUserPicks();
     }
 }
