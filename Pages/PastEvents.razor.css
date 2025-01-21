@@ -1,8 +1,30 @@
 ﻿.pastevent-container {
+    width: 100%;
+    max-width: 825px; /* Make sure the outer container has the same max-width as the table */
+    margin: 0 auto; /* Centers the container */
+    padding: 0 10px; /* Optional: Adds padding for better spacing */
+}
+
+.card-body {
+    width: 100%; /* Ensures the body of the card takes full width inside the container */
+}
+
+.table-responsive {
     max-width: 825px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* Ensures the table is centered within the parent container */
+    overflow-x: auto; /* Enables horizontal scrolling if content overflows */
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed; /* Ensures table adapts to screen size */
+    word-wrap: break-word; /* Allows long words to break and prevent overflow */
+}
+
+@media (max-width: 768px) {
+    .table th, .table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Truncate content if it's too long */
+    }
 }
