@@ -1,30 +1,30 @@
 ﻿.pastevent-container {
     width: 100%;
-    max-width: 825px; /* Make sure the outer container has the same max-width as the table */
-    margin: 0 auto; /* Centers the container */
-    padding: 0 10px; /* Optional: Adds padding for better spacing */
+    max-width: 850px; /* Container width */
+    margin: 0 auto; /* Center the container */
+    padding: 0 10px; /* Optional: Padding for better spacing */
 }
 
 .card-body {
-    width: 100%; /* Ensures the body of the card takes full width inside the container */
+    width: 100%;
 }
 
-.table-responsive {
-    max-width: 825px;
-    margin: 0 auto; /* Ensures the table is centered within the parent container */
-    overflow-x: auto; /* Enables horizontal scrolling if content overflows */
+.table-wrapper {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS devices */
+    max-width: 100%; /* Full width */
 }
 
 .table {
-    width: 100%;
-    table-layout: fixed; /* Ensures table adapts to screen size */
-    word-wrap: break-word; /* Allows long words to break and prevent overflow */
+    width: 100%; /* Full width for table */
+    table-layout: fixed; /* Prevent content from overflowing and causing table distortion */
+    word-wrap: break-word; /* Wrap long words */
 }
 
 @media (max-width: 768px) {
     .table th, .table td {
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; /* Truncate content if it's too long */
+        text-overflow: ellipsis; /* Truncate long text with ellipsis */
     }
 }
