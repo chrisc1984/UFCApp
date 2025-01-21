@@ -6,7 +6,13 @@
 
 <PageTitle>Past Events</PageTitle>
 
+
+
+
+
+
 <div class="pastevent-container">
+
     <h1 class="text-center mb-4">Past Events</h1>
 
     @if (pastEvents == null)
@@ -19,12 +25,11 @@
             @foreach (var e in pastEvents)
             {
                 <div class="card mb-3">
-                    <div class="card-header text-center">
+                    <div class="card-header">
                         UFC @e.Name
                     </div>
                     <div class="card-body">
-                        <!-- Table wrapper with scroll on small screens -->
-                        <div class="table-wrapper">
+                        <div class="table-container">
                             <table class="table table-bordered border-4">
                                 <thead>
                                     <tr>
@@ -76,6 +81,7 @@
                                                     }
                                                 </td>
                                             }
+
                                         </tr>
                                     }
                                 </tbody>
@@ -103,6 +109,7 @@
         </div>
     }
 </div>
+
 
 @code {
     private List<Player>? players;
